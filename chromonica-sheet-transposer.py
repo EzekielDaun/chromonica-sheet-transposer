@@ -8,7 +8,7 @@ class base12_note(object):  # convert single note to base-12 number
         self,
         string=None,
         value=None,
-        scale=0,
+        octave=0,
     ):
         self.__note2num = {
             "1": 0,
@@ -45,11 +45,11 @@ class base12_note(object):  # convert single note to base-12 number
             self.scale = int(value / 12) if value >= 0 else int(value / 12) - 1
             self.__string = None
         else:
-            self.scale = scale
+            self.scale = octave
             self.__string = string
             parser = re.compile(r"#?\d")
             self.__value = self.__note2num[parser.findall(string)[
-                0]] + scale * 12
+                0]] + octave * 12
 
     def __str__(self):
         value = self.__value % 12
@@ -88,9 +88,9 @@ def parse_line(string):
             scale += 1
         elif char in ("1", "2", "3", "4", "5", "6", "7"):
             note = (
-                base12_note(string=str(temp) + char, scale=scale)
+                base12_note(string=str(temp) + char, octave=scale)
                 if temp
-                else base12_note(string=char, scale=scale)
+                else base12_note(string=char, octave=scale)
             )
             l.append(note)
             temp = None
